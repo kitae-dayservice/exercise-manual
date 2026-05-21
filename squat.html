@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スクワット — 平行棒 — 運動指導マニュアル</title>
+<style>
+  :root {
+    --primary: #2c5253;
+    --accent: #4a7c7e;
+    --accent-light: #e8f4f4;
+    --text: #1a2e2e;
+    --text-sub: #5a7070;
+    --bg: #f4f8f8;
+    --white: #ffffff;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --blue: #1d4ed8;
+    --blue-bg: #dbeafe;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+    --yellow: #d97706;
+    --yellow-bg: #fef3c7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(44,82,83,0.3);
+  }
+  .header-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .back-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+  .breadcrumb { font-size: 10px; opacity: 0.75; }
+  .header-title { font-size: 18px; font-weight: 700; }
+  .main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+  .title-block {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(44,82,83,0.07);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .title-icon { font-size: 48px; flex-shrink: 0; }
+  .title-text h1 { font-size: 24px; font-weight: 800; color: var(--primary); }
+  .title-text p { font-size: 13px; color: var(--text-sub); margin-top: 6px; line-height: 1.6; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { padding: 3px 10px; background: var(--accent-light); color: var(--primary); border-radius: 16px; font-size: 11px; font-weight: 600; }
+  .image-section {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(44,82,83,0.07);
+  }
+  .image-section img { width: 100%; display: block; }
+  .image-caption {
+    padding: 10px 14px;
+    font-size: 11px;
+    color: var(--text-sub);
+    text-align: center;
+    border-top: 1px solid #eef2f2;
+  }
+  .info-card {
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .info-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .info-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .info-card ul li {
+    font-size: 13px;
+    line-height: 1.6;
+    padding-left: 16px;
+    position: relative;
+  }
+  .info-card ul li::before {
+    content: '●';
+    position: absolute;
+    left: 0;
+    font-size: 8px;
+    top: 5px;
+  }
+  .card-effect { background: var(--green-bg); border-left: 4px solid var(--green); color: #14532d; }
+  .card-effect .info-card-title { color: var(--green); }
+  .card-effect ul li::before { color: var(--green); }
+  .card-voice { background: var(--blue-bg); border-left: 4px solid var(--blue); color: #1e3a8a; }
+  .card-voice .info-card-title { color: var(--blue); }
+  .card-warning { background: var(--red-bg); border-left: 4px solid var(--red); color: #7f1d1d; }
+  .card-warning .info-card-title { color: var(--red); }
+  .card-warning ul li::before { color: var(--red); }
+  .voice-pattern {
+    background: rgba(255,255,255,0.6);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+  .voice-pattern:last-child { margin-bottom: 0; }
+  .voice-label { font-size: 10px; font-weight: 700; color: var(--blue); margin-bottom: 4px; letter-spacing: 0.05em; }
+  .voice-text { font-size: 14px; font-weight: 600; }
+  .steps-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .steps-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .step-item:last-child { margin-bottom: 0; }
+  .step-num {
+    background: var(--primary);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-content { flex: 1; }
+  .step-name { font-size: 14px; font-weight: 700; color: var(--primary); }
+  .step-desc { font-size: 12px; color: var(--text-sub); margin-top: 3px; line-height: 1.6; }
+  .tip-box {
+    background: var(--yellow-bg);
+    border-left: 4px solid var(--yellow);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.7;
+  }
+  .tip-box strong { display: block; margin-bottom: 4px; }
+
+  /* スクワット専用：キーポイント強調 */
+  .key-point {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 16px rgba(44,82,83,0.25);
+  }
+  .key-point-icon { font-size: 32px; flex-shrink: 0; }
+  .key-point-text { font-size: 14px; font-weight: 700; line-height: 1.5; }
+  .key-point-text span { font-size: 11px; font-weight: 400; opacity: 0.8; display: block; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <a href="parallel_bars.html" class="back-btn">←</a>
+    <div>
+      <div class="breadcrumb">平行棒 › </div>
+      <div class="header-title">スクワット</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- タイトル -->
+  <div class="title-block">
+    <div class="title-icon">🏋️</div>
+    <div class="title-text">
+      <h1>スクワット</h1>
+      <p>浅めのクォータースクワットで、足腰の主要筋肉を安全に鍛えます。立ち座りや歩行の土台となる筋力を養います。</p>
+      <div class="tags">
+        <span class="tag">🦵 大腿四頭筋</span>
+        <span class="tag">🍑 大臀筋</span>
+        <span class="tag">💪 ハムストリングス</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- キーポイント -->
+  <div class="key-point">
+    <div class="key-point-icon">🍑</div>
+    <div class="key-point-text">
+      「お尻を後ろへ引く」が最重要ポイント
+      <span>前のめりになりやすいので、まずお辞儀するように前傾しながらお尻を後ろへ引く動作を意識させましょう</span>
+    </div>
+  </div>
+
+  <!-- 画像 -->
+  <div class="image-section">
+    <img src="スクワット.png" alt="スクワットの2ステップ図解（立位→クォータースクワット）">
+    <div class="image-caption">📸 ①スタート（立位） → ②浅めのスクワット（クォータースクワット）</div>
+  </div>
+
+  <!-- 効果 -->
+  <div class="info-card card-effect">
+    <div class="info-card-title">✅ 何に効く？</div>
+    <ul>
+      <li>足ももの前後（大腿四頭筋・ハムストリングス）とお尻（大臀筋）を鍛える</li>
+      <li>特に大臀筋への高い効果がある</li>
+      <li>立ち座りや歩行に必要な下肢筋力の土台をつくる</li>
+    </ul>
+  </div>
+
+  <!-- やり方 -->
+  <div class="steps-card">
+    <div class="steps-title">📋 やり方（2ステップ）</div>
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-name">スタート（立位）</div>
+        <div class="step-desc">足は肩幅程度・つま先は自然にやや外向き・目線は正面・胸を張る・背中・腰を丸めない・骨盤は前傾を意識</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-name">浅めのスクワット（クォータースクワット）</div>
+        <div class="step-desc">お尻を後ろへ引きながらやや前傾する。股関節と膝関節を同時に曲げる。深く曲げすぎず、浅めのクォータースクワットで行う</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 声かけ例 -->
+  <div class="info-card card-voice">
+    <div class="info-card-title">💬 声かけ例</div>
+    <div class="voice-pattern">
+      <div class="voice-label">動作を促す（最重要）</div>
+      <div class="voice-text">「お尻を後ろに引いて、ちょっとお辞儀するように前に倒れてみましょう」</div>
+    </div>
+    <div class="voice-pattern">
+      <div class="voice-label">効果を伝える</div>
+      <div class="voice-text">「立ち座りが楽になる筋肉を鍛えています。毎日の生活がぐっと楽になりますよ」</div>
+    </div>
+    <div class="voice-pattern">
+      <div class="voice-label">安全を確認する</div>
+      <div class="voice-text">「無理のない深さで大丈夫です。痛みや違和感があったらすぐ教えてください」</div>
+    </div>
+  </div>
+
+  <!-- 注意点 -->
+  <div class="info-card card-warning">
+    <div class="info-card-title">⚠️ 注意点</div>
+    <ul>
+      <li>腰が曲がっている方は浅めに行う</li>
+      <li>後ろに倒れそうな場合は、まずお辞儀をするように前傾を指導する</li>
+      <li>膝のお皿がつま先を大きく超えないようにする（つま先より前はNG）</li>
+      <li>重心が後ろに行きすぎないようにする</li>
+    </ul>
+  </div>
+
+  <div class="tip-box">
+    <strong>💡 現場のポイント</strong>
+    無理のない可動域で、痛みのない範囲で行いましょう。「しゃがみすぎ」より「正しいフォームで浅く」の方が効果的です。まずお辞儀の動作から始めると理解しやすくなります。
+  </div>
+
+</div>
+</body>
+</html>

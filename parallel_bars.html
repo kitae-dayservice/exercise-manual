@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>平行棒 — 運動指導マニュアル</title>
+<style>
+  :root {
+    --primary: #2c5253;
+    --accent: #4a7c7e;
+    --accent-light: #e8f4f4;
+    --text: #1a2e2e;
+    --text-sub: #5a7070;
+    --bg: #f4f8f8;
+    --white: #ffffff;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --blue: #1d4ed8;
+    --blue-bg: #dbeafe;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ヘッダー */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: var(--white);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(44,82,83,0.3);
+  }
+  .header-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .back-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+  .header-title { font-size: 18px; font-weight: 700; }
+  .header-sub { font-size: 11px; opacity: 0.8; margin-top: 2px; }
+
+  /* メインコンテンツ */
+  .main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  /* ヒーローカード */
+  .hero {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(44,82,83,0.1);
+    margin-bottom: 28px;
+  }
+  .hero-img {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, #1a3a3b 0%, var(--accent) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    position: relative;
+  }
+  .hero-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(26,46,46,0.5));
+  }
+  .hero-body { padding: 20px; }
+  .hero-title { font-size: 26px; font-weight: 800; color: var(--primary); }
+  .hero-desc { font-size: 14px; color: var(--text-sub); margin-top: 8px; line-height: 1.7; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .tag {
+    padding: 4px 12px;
+    background: var(--accent-light);
+    color: var(--primary);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* セクションタイトル */
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-sub);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+
+  /* 運動カードグリッド */
+  .exercise-grid {
+    display: grid;
+    gap: 16px;
+  }
+  .exercise-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(44,82,83,0.08);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: stretch;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 2px solid transparent;
+  }
+  .exercise-card:hover, .exercise-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(44,82,83,0.15);
+    border-color: var(--accent);
+  }
+  .card-thumb {
+    width: 110px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--accent-light), #c5dada);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    position: relative;
+  }
+  .card-thumb .step-count {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 10px;
+  }
+  .card-body {
+    flex: 1;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+  }
+  .card-name { font-size: 18px; font-weight: 800; color: var(--primary); }
+  .card-target { font-size: 12px; color: var(--text-sub); }
+  .card-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .badge {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .card-arrow {
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  /* 注意書き */
+  .notice {
+    background: var(--red-bg);
+    border-left: 4px solid var(--red);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 28px;
+    font-size: 13px;
+    color: #7f1d1d;
+    line-height: 1.7;
+  }
+  .notice strong { display: block; margin-bottom: 4px; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <a href="index.html" class="back-btn">←</a>
+    <div>
+      <div class="header-title">平行棒</div>
+      <div class="header-sub">歩行・下肢機能の訓練</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="hero">
+    <div class="hero-img">🚶</div>
+    <div class="hero-body">
+      <div class="hero-title">平行棒</div>
+      <div class="hero-desc">手すりに沿って安全に歩行・下肢の運動を行うことで、日常生活に必要な足腰の力とバランスを養います。転倒予防・歩行能力の維持・改善に最も効果的なメニューです。</div>
+      <div class="tags">
+        <span class="tag">🦵 下肢筋力</span>
+        <span class="tag">⚖️ バランス</span>
+        <span class="tag">🚶 歩行改善</span>
+        <span class="tag">🛡️ 転倒予防</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">運動メニューを選ぶ</div>
+
+  <div class="exercise-grid">
+
+    <a href="basic_walking.html" class="exercise-card">
+      <div class="card-thumb">
+        🚶
+        <div class="step-count">4ステップ</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">基本歩行</div>
+        <div class="card-target">股関節・膝関節・バランス</div>
+        <div class="card-badges">
+          <span class="badge badge-green">転倒予防</span>
+          <span class="badge badge-blue">歩行改善</span>
+        </div>
+      </div>
+      <div class="card-arrow">›</div>
+    </a>
+
+    <a href="squat.html" class="exercise-card">
+      <div class="card-thumb">
+        🏋️
+        <div class="step-count">2ステップ</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">スクワット</div>
+        <div class="card-target">大腿四頭筋・大臀筋・ハムストリングス</div>
+        <div class="card-badges">
+          <span class="badge badge-green">筋力強化</span>
+          <span class="badge badge-blue">立ち座り改善</span>
+        </div>
+      </div>
+      <div class="card-arrow">›</div>
+    </a>
+
+  </div>
+
+  <div class="notice">
+    <strong>⚠️ 共通の注意事項</strong>
+    膝・股関節に痛みが出た場合は直ちに中止し、機能訓練指導員に報告してください。手すりは必ず両手で保持し、絶対に離さないようにしてください。
+  </div>
+
+</div>
+</body>
+</html>
