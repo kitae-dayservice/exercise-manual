@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>運動指導マニュアル</title>
+<style>
+  :root {
+    --primary: #2c5253;
+    --accent: #4a7c7e;
+    --accent-light: #e8f4f4;
+    --text: #1a2e2e;
+    --text-sub: #5a7070;
+    --bg: #f4f8f8;
+    --white: #ffffff;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --blue: #1d4ed8;
+    --blue-bg: #dbeafe;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+    --disabled: #b0c4c4;
+    --disabled-bg: #e8eeee;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ヘッダー */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(44,82,83,0.3);
+  }
+  .header-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 16px 16px 0;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .header-title { font-size: 18px; font-weight: 800; letter-spacing: 0.02em; }
+  .header-sub { font-size: 11px; opacity: 0.8; margin-top: 3px; }
+  .header-icon { font-size: 32px; }
+
+  /* タブ */
+  .tabs {
+    display: flex;
+    gap: 0;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 12px 8px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  .tab-btn.active {
+    color: #fff;
+    border-bottom-color: #fff;
+  }
+
+  /* メイン */
+  .main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+
+  /* タブパネル */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* セクションラベル */
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-sub);
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    padding-left: 2px;
+  }
+
+  /* マシングリッド */
+  .machine-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .machine-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(44,82,83,0.08);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 2px solid transparent;
+    position: relative;
+  }
+  .machine-card:hover, .machine-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(44,82,83,0.15);
+    border-color: var(--accent);
+  }
+  .machine-card.disabled {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  .machine-card.featured {
+    grid-column: span 2;
+    flex-direction: row;
+    align-items: center;
+  }
+  .card-thumb {
+    width: 100%;
+    aspect-ratio: 1 / 0.85;
+    background: linear-gradient(135deg, var(--accent-light), #c5dada);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    flex-shrink: 0;
+  }
+  .machine-card.featured .card-thumb {
+    width: 110px;
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 90px;
+  }
+  .card-body {
+    padding: 12px;
+    flex: 1;
+  }
+  .machine-card.featured .card-body {
+    padding: 14px;
+  }
+  .card-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.3;
+  }
+  .card-target {
+    font-size: 11px;
+    color: var(--text-sub);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .card-badge {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .badge-ready {
+    background: var(--green-bg);
+    color: var(--green);
+  }
+  .badge-soon {
+    background: var(--disabled-bg);
+    color: var(--disabled);
+  }
+  .coming-label {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(176,196,196,0.9);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+
+  /* 症状チップ */
+  .symptom-intro {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--text-sub);
+    line-height: 1.7;
+    box-shadow: 0 2px 10px rgba(44,82,83,0.06);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .chip {
+    padding: 9px 16px;
+    background: var(--white);
+    border: 2px solid var(--accent);
+    color: var(--primary);
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .chip:hover, .chip.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .chip.disabled {
+    border-color: var(--disabled-bg);
+    color: var(--disabled);
+    background: var(--disabled-bg);
+    pointer-events: none;
+  }
+
+  /* 症状別結果 */
+  .symptom-result {
+    display: none;
+    background: var(--white);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 2px 10px rgba(44,82,83,0.06);
+    margin-bottom: 16px;
+  }
+  .symptom-result.active { display: block; }
+  .result-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-sub);
+    margin-bottom: 12px;
+  }
+  .result-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eef2f2;
+    text-decoration: none;
+    color: inherit;
+  }
+  .result-card:last-child { border-bottom: none; }
+  .result-icon { font-size: 28px; flex-shrink: 0; }
+  .result-info { flex: 1; }
+  .result-name { font-size: 14px; font-weight: 700; color: var(--primary); }
+  .result-desc { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
+  .result-arrow { color: var(--accent); font-size: 18px; }
+
+  /* 質問リンク */
+  .question-banner {
+    background: var(--primary);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: #fff;
+    margin-top: 8px;
+    box-shadow: 0 4px 16px rgba(44,82,83,0.2);
+    transition: opacity 0.15s;
+  }
+  .question-banner:hover { opacity: 0.9; }
+  .question-banner-icon { font-size: 32px; flex-shrink: 0; }
+  .question-banner-text .title { font-size: 15px; font-weight: 700; }
+  .question-banner-text .sub { font-size: 12px; opacity: 0.8; margin-top: 3px; }
+  .question-banner-arrow { margin-left: auto; font-size: 20px; }
+
+  /* 準備中メッセージ */
+  .coming-soon-note {
+    background: var(--disabled-bg);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--text-sub);
+    text-align: center;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div>
+        <div class="header-title">運動指導マニュアル</div>
+        <div class="header-sub">迷ったら写真をタップ・3タップで答えへ</div>
+      </div>
+      <div class="header-icon">💪</div>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('machine')">🏋️ マシンで選ぶ</button>
+      <button class="tab-btn" onclick="switchTab('symptom')">🩺 症状で選ぶ</button>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- マシンで選ぶ -->
+  <div class="tab-panel active" id="panel-machine">
+    <div class="section-label">マシン・器具を選んでください</div>
+    <div class="machine-grid">
+
+      <a href="parallel_bars.html" class="machine-card featured">
+        <div class="card-thumb">🚶</div>
+        <div class="card-body">
+          <div class="card-name">平行棒</div>
+          <div class="card-target">歩行訓練・下肢筋力・バランス</div>
+          <span class="card-badge badge-ready">✅ 公開中</span>
+        </div>
+      </a>
+
+      <div class="machine-card disabled">
+        <div class="coming-label">準備中</div>
+        <div class="card-thumb">🚶‍♂️</div>
+        <div class="card-body">
+          <div class="card-name">ウォーキング<br>マシン</div>
+          <div class="card-target">有酸素・歩行能力</div>
+          <span class="card-badge badge-soon">🔜 準備中</span>
+        </div>
+      </div>
+
+      <div class="machine-card disabled">
+        <div class="coming-label">準備中</div>
+        <div class="card-thumb">🚴</div>
+        <div class="card-body">
+          <div class="card-name">エアロバイク</div>
+          <div class="card-target">有酸素・膝に優しい</div>
+          <span class="card-badge badge-soon">🔜 準備中</span>
+        </div>
+      </div>
+
+      <div class="machine-card disabled">
+        <div class="coming-label">準備中</div>
+        <div class="card-thumb">🦵</div>
+        <div class="card-body">
+          <div class="card-name">レッグ<br>プレス</div>
+          <div class="card-target">下肢筋力・膝関節</div>
+          <span class="card-badge badge-soon">🔜 準備中</span>
+        </div>
+      </div>
+
+      <div class="machine-card disabled">
+        <div class="coming-label">準備中</div>
+        <div class="card-thumb">💪</div>
+        <div class="card-body">
+          <div class="card-name">チェスト<br>プレス</div>
+          <div class="card-target">上肢筋力・体幹</div>
+          <span class="card-badge badge-soon">🔜 準備中</span>
+        </div>
+      </div>
+
+      <div class="machine-card disabled">
+        <div class="coming-label">準備中</div>
+        <div class="card-thumb">🦿</div>
+        <div class="card-body">
+          <div class="card-name">レッグ<br>エクステンション</div>
+          <div class="card-target">大腿四頭筋</div>
+          <span class="card-badge badge-soon">🔜 準備中</span>
+        </div>
+      </div>
+
+      <div class="machine-card disabled">
+        <div class="coming-label">準備中</div>
+        <div class="card-thumb">↔️</div>
+        <div class="card-body">
+          <div class="card-name">ヒップ<br>アダクション</div>
+          <div class="card-target">股関節・内転筋</div>
+          <span class="card-badge badge-soon">🔜 準備中</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="coming-soon-note">準備中のマシンは順次追加予定です</div>
+  </div>
+
+  <!-- 症状で選ぶ -->
+  <div class="tab-panel" id="panel-symptom">
+    <div class="symptom-intro">
+      利用者様の困りごとや症状をタップすると、おすすめの運動が表示されます。
+    </div>
+
+    <div class="section-label">症状・お困りごとを選んでください</div>
+    <div class="chips">
+      <button class="chip active" onclick="showSymptom('walk')">🚶 転びやすい</button>
+      <button class="chip" onclick="showSymptom('knee')">🦵 膝の痛み</button>
+      <button class="chip disabled">🦴 股関節の痛み</button>
+      <button class="chip disabled">💪 肩が上がらない</button>
+      <button class="chip disabled">😮‍💨 息切れ</button>
+      <button class="chip disabled">🩺 体調・あんばい</button>
+      <button class="chip disabled">🦯 杖・補助具</button>
+    </div>
+
+    <div class="symptom-result active" id="result-walk">
+      <div class="result-title">▼「転びやすい」におすすめの運動</div>
+      <a href="basic_walking.html" class="result-card">
+        <div class="result-icon">🚶</div>
+        <div class="result-info">
+          <div class="result-name">平行棒：基本歩行</div>
+          <div class="result-desc">股関節を正しく使い、安定した歩行を身につける</div>
+        </div>
+        <div class="result-arrow">›</div>
+      </a>
+      <a href="squat.html" class="result-card">
+        <div class="result-icon">🏋️</div>
+        <div class="result-info">
+          <div class="result-name">平行棒：スクワット</div>
+          <div class="result-desc">大臀筋・大腿四頭筋を鍛え、踏ん張る力をつける</div>
+        </div>
+        <div class="result-arrow">›</div>
+      </a>
+    </div>
+
+    <div class="symptom-result" id="result-knee">
+      <div class="result-title">▼「膝の痛み」におすすめの運動</div>
+      <a href="squat.html" class="result-card">
+        <div class="result-icon">🏋️</div>
+        <div class="result-info">
+          <div class="result-name">平行棒：スクワット（浅め）</div>
+          <div class="result-desc">痛みのない範囲で浅く行う。膝周りの筋力を補う</div>
+        </div>
+        <div class="result-arrow">›</div>
+      </a>
+    </div>
+
+    <a href="mailto:" class="question-banner">
+      <div class="question-banner-icon">❓</div>
+      <div class="question-banner-text">
+        <div class="title">答えが見つからない場合</div>
+        <div class="sub">質問フォームから機能訓練士に相談できます</div>
+      </div>
+      <div class="question-banner-arrow">›</div>
+    </a>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+    document.getElementById(`panel-${tab}`).classList.add('active');
+  }
+
+  function showSymptom(id) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.symptom-result').forEach(r => r.classList.remove('active'));
+    event.target.classList.add('active');
+    const result = document.getElementById(`result-${id}`);
+    if (result) result.classList.add('active');
+  }
+</script>
+</body>
+</html>
