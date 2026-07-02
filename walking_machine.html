@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ウォーキングマシン — 運動指導マニュアル</title>
+<style>
+  :root {
+    --primary: #2c5253;
+    --accent: #4a7c7e;
+    --accent-light: #e8f4f4;
+    --text: #1a2e2e;
+    --text-sub: #5a7070;
+    --bg: #f4f8f8;
+    --white: #ffffff;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --blue: #1d4ed8;
+    --blue-bg: #dbeafe;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+    --yellow: #d97706;
+    --yellow-bg: #fef3c7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(44,82,83,0.3);
+  }
+  .header-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .back-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+  .breadcrumb { font-size: 10px; opacity: 0.75; }
+  .header-title { font-size: 18px; font-weight: 700; }
+  .main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+  .title-block {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(44,82,83,0.07);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .title-icon { font-size: 48px; flex-shrink: 0; }
+  .title-text h1 { font-size: 24px; font-weight: 800; color: var(--primary); }
+  .title-text p { font-size: 13px; color: var(--text-sub); margin-top: 6px; line-height: 1.6; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { padding: 3px 10px; background: var(--accent-light); color: var(--primary); border-radius: 16px; font-size: 11px; font-weight: 600; }
+  .image-section {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(44,82,83,0.07);
+  }
+  .image-section img { width: 100%; display: block; }
+  .image-caption {
+    padding: 10px 14px;
+    font-size: 11px;
+    color: var(--text-sub);
+    text-align: center;
+    border-top: 1px solid #eef2f2;
+  }
+  .stage-label {
+    font-size: 13px;
+    font-weight: 800;
+    color: #fff;
+    background: var(--accent);
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin: 8px 0 12px;
+    letter-spacing: 0.05em;
+  }
+  .info-card {
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .info-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .info-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .info-card ul li {
+    font-size: 13px;
+    line-height: 1.6;
+    padding-left: 16px;
+    position: relative;
+  }
+  .info-card ul li::before {
+    content: '●';
+    position: absolute;
+    left: 0;
+    font-size: 8px;
+    top: 5px;
+  }
+  .card-effect { background: var(--green-bg); border-left: 4px solid var(--green); color: #14532d; }
+  .card-effect .info-card-title { color: var(--green); }
+  .card-effect ul li::before { color: var(--green); }
+  .card-voice { background: var(--blue-bg); border-left: 4px solid var(--blue); color: #1e3a8a; }
+  .card-voice .info-card-title { color: var(--blue); }
+  .card-warning { background: var(--red-bg); border-left: 4px solid var(--red); color: #7f1d1d; }
+  .card-warning .info-card-title { color: var(--red); }
+  .card-warning ul li::before { color: var(--red); }
+  .voice-pattern {
+    background: rgba(255,255,255,0.6);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+  .voice-pattern:last-child { margin-bottom: 0; }
+  .voice-label { font-size: 10px; font-weight: 700; color: var(--blue); margin-bottom: 4px; letter-spacing: 0.05em; }
+  .voice-text { font-size: 14px; font-weight: 600; }
+  .steps-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .steps-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .step-item:last-child { margin-bottom: 0; }
+  .step-num {
+    background: var(--primary);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-content { flex: 1; }
+  .step-name { font-size: 14px; font-weight: 700; color: var(--primary); }
+  .step-desc { font-size: 12px; color: var(--text-sub); margin-top: 3px; line-height: 1.6; }
+  .tip-box {
+    background: var(--yellow-bg);
+    border-left: 4px solid var(--yellow);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.7;
+  }
+  .tip-box strong { display: block; margin-bottom: 4px; }
+  .key-point {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 16px rgba(44,82,83,0.25);
+  }
+  .key-point-icon { font-size: 32px; flex-shrink: 0; }
+  .key-point-text { font-size: 14px; font-weight: 700; line-height: 1.5; }
+  .key-point-text span { font-size: 11px; font-weight: 400; opacity: 0.8; display: block; margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <a href="index.html" class="back-btn">←</a>
+    <div>
+      <div class="breadcrumb">トップ › </div>
+      <div class="header-title">ウォーキングマシン</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- タイトル -->
+  <div class="title-block">
+    <div class="title-icon">🚶‍♂️</div>
+    <div class="title-text">
+      <h1>ウォーキングマシン</h1>
+      <p>吊り下げ式のハーネス（ベルト）で体を支えながら、安全に歩行練習を行います。体を起こした正しいフォームでの歩行獲得を目指します。</p>
+      <div class="tags">
+        <span class="tag">🚶 歩行改善</span>
+        <span class="tag">👣 歩幅の改善</span>
+        <span class="tag">🛡️ 転倒予防</span>
+        <span class="tag">🪢 安全ハーネス</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- キーポイント -->
+  <div class="key-point">
+    <div class="key-point-icon">🎯</div>
+    <div class="key-point-text">
+      「吊具の真下で、体を起こして歩く」が最重要ポイント
+      <span>天井の吊りポイントからベルトが真下に来ていれば、体が起きた正しい姿勢で歩けています。前のめりになっていないか常に確認しましょう</span>
+    </div>
+  </div>
+
+  <!-- 全体写真 -->
+  <div class="image-section">
+    <img src="walking_machine_full.jpg" alt="吊り下げ式ウォーキングマシンの全体像">
+    <div class="image-caption">📸 天井の吊りポイントからハーネスで体を支えて歩行します</div>
+  </div>
+
+  <!-- 効果 -->
+  <div class="info-card card-effect">
+    <div class="info-card-title">✅ 何に効く？</div>
+    <ul>
+      <li>ハーネスで体を支えるため、転倒の心配なく歩行練習ができる</li>
+      <li>体を起こした正しい姿勢での歩行パターンを身につける</li>
+      <li>足を後ろへ送る動きを引き出し、前後の歩幅を改善する</li>
+      <li>心肺機能を鍛え、体力をつけるトレーニングになる</li>
+      <li>バランスよく歩くことで、足腰全体の筋肉に効くトレーニングになる</li>
+    </ul>
+  </div>
+
+  <!-- 第一段階 -->
+  <div class="stage-label">第一段階：スタートまで</div>
+
+  <div class="steps-card">
+    <div class="steps-title">🪢 ベルトの装着（5ステップ）</div>
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-name">両手を通して背面ベルトを締める</div>
+        <div class="step-desc">吊ってあるベルトに両手を片方ずつ通し、背面のベルトを2段階で締める。ここは特にしっかりと締めることを意識する</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-name">引き上げ紐を引く</div>
+        <div class="step-desc">ベルトを締めたら、脇にある「ベルトを引き上げるための紐」を引っ張り上げる</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-name">ロックをかける</div>
+        <div class="step-desc">引き上げた後、ロックをかける場所に指を引っ掛けて引き出す</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-name">固定を確認する</div>
+        <div class="step-desc">ベルトを上から下に向かって下ろすようにして、確実に固定されているかを確認する</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <div class="step-name">もう一度締め直す</div>
+        <div class="step-desc">引き上げの際に少し緩みが出るため、最後にもう一度、背面ベルトを2段階でしっかり締め直す</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- パネル写真 -->
+  <div class="image-section">
+    <img src="walking_machine_panel.jpg" alt="ウォーキングマシンの操作パネル（スタート・速度調整ボタン）">
+    <div class="image-caption">📸 操作パネル：緑がスタート、赤がストップ。∨∧ボタンで速度を調整します</div>
+  </div>
+
+  <div class="steps-card">
+    <div class="steps-title">▶️ 起動と速度調整</div>
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-name">スタート</div>
+        <div class="step-desc">利用者に正面を向いてもらい、スタートボタンを押す</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-name">0.2から少しずつ上げる</div>
+        <div class="step-desc">速度0.2からスタートし、0.1刻みでゆっくりと上げていく</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-name">名札の裏の設定値まで調整</div>
+        <div class="step-desc">利用者の名札の裏に速度設定が記載されているので、その数値まで調整する</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-name">声かけと確認</div>
+        <div class="step-desc">「足元が動くので、ゆっくり歩いていってください」と声かけをする。目標の数値に到達したら、利用者がしっかりと前を向いて歩けているかを確認する</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第二段階 -->
+  <div class="stage-label">第二段階：フォームの確認</div>
+
+  <div class="steps-card">
+    <div class="steps-title">👀 歩いているフォームの確認（4ポイント）</div>
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-name">吊具の真下にいるか</div>
+        <div class="step-desc">天井の吊りポイントからベルトが真下に来ているかを確認する。体が起きて吊具の真下で歩けていないと、前のめりの歩行になっている</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-name">姿勢と視線</div>
+        <div class="step-desc">体を起こして、視線が正面を向いているかを確認する。理想は頭も起きていることだが、頭下がりの症状や強い猫背がある方には、そこまで強く求めなくてよい</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-name">足の前後の歩幅</div>
+        <div class="step-desc">体を起こして歩けていることを前提に、足が前後に開けているかを確認する。体の垂直線よりも後ろ足が後ろへ行くことが必要。ただし利用者への説明はシンプルに「ついた足が体の真下を通り過ぎるまで、ゆっくり歩いてください」でよい</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-name">足を「後ろに送る」意識づけ</div>
+        <div class="step-desc">足を前に出させるより、体を起こして足をしっかり後ろに送るよう促す。足が後ろに残ることで前後の歩幅が出て、正常な歩行に近づく。どうしても足が前に出ない方には「足を上に持ち上げる」意識を持ってもらうとスムーズ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 声かけ例 -->
+  <div class="info-card card-voice">
+    <div class="info-card-title">💬 声かけ例</div>
+    <div class="voice-pattern">
+      <div class="voice-label">スタート時</div>
+      <div class="voice-text">「足元が動くので、ゆっくり歩いていってください」</div>
+    </div>
+    <div class="voice-pattern">
+      <div class="voice-label">歩幅を引き出す</div>
+      <div class="voice-text">「ついた足が体の真下を通り過ぎるまで、ゆっくり歩いてください」</div>
+    </div>
+    <div class="voice-pattern">
+      <div class="voice-label">下を向いてしまう方へ（足が動けている場合）</div>
+      <div class="voice-text">「そのまま前を向けると、もっと良い歩きになりますよ」</div>
+    </div>
+  </div>
+
+  <!-- うまくいかない時 -->
+  <div class="steps-card">
+    <div class="steps-title">🔧 うまくいかない時の対応</div>
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-name">速度で調整する</div>
+        <div class="step-desc">基本は速度を落として対応する。ただし、不自然に足を浮かせる時間が長い方は、むしろ速くすることで改善できる場合もある。判断に迷う場合は機能訓練指導員に確認する</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-name">実施のタイミング</div>
+        <div class="step-desc">歩く格好は平行棒の「基本歩行」に近い形。理想は平行棒が終わった後に行う方が良い結果が出やすいが、フロアの流れ次第で先にウォーキングを行っても構わない</div>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-name">下を向いてしまう方への対応</div>
+        <div class="step-desc">「前を向いて」と強く言いすぎず、まず下を向いていても足の動きがしっかりしているかを確認する。足が動いているなら前向きな声かけでよい。足元もおぼつかない場合は適性がない可能性もあるため、吊り位置に体があるか・足が前後に開けているかを再確認する</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 注意点 -->
+  <div class="info-card card-warning">
+    <div class="info-card-title">⚠️ 注意点</div>
+    <ul>
+      <li>背面ベルトは「2段階で締める→引き上げ→締め直し」まで必ずセットで行う</li>
+      <li>速度は必ず名札の裏の設定値を確認する。自己判断で大きく変えない</li>
+      <li>痛みを伴う場合は、速度を落とすか中止を検討する</li>
+      <li>判断に迷う場合は、必ず機能訓練指導員に確認する</li>
+    </ul>
+  </div>
+
+  <div class="tip-box">
+    <strong>💡 現場のポイント</strong>
+    この歩行は平行棒の「基本歩行」と同じフォームが土台です。体を起こして、足を後ろへ送る——迷ったらこの2点に立ち返りましょう。前のめりになっていたら、まず吊具の真下に体があるかを確認してください。
+  </div>
+
+</div>
+</body>
+</html>
